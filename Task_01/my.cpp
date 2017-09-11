@@ -140,9 +140,9 @@ SPLAY::Splay <long long, string> num2name; // num -> name;
 
 
 int main(){
-#ifdef __APPLE__
+/*#ifdef __APPLE__
 	freopen("main.in","r",stdin);
-#endif
+#endif*/
 	string maxs; maxs.clear();
 	for(int i = 0; i < 1000; i++) maxs += 'z';
 	name2info.init("\0", maxs);
@@ -158,6 +158,7 @@ int main(){
 			puts("-----------------------------------------------------");
 			puts("Please input the name");
 			puts("-----------------------------------------------------");
+			printf("~$ ");
 			string name; cin >> name;
 			INFO cur; 
 			bool isSuccess = name2info.QUERY(name, cur);
@@ -171,13 +172,15 @@ int main(){
 				puts("-----------------------------------------------------");
 			}else {
 				puts("--------------------------------------------------------------------------------------");
-				puts("We do not find this person, would you like to add his/her to your phone pad ? [Yes/No]");
+				puts("We do not find this person, would you like to add he/her to your phone pad ? [Yes/No]");
 				puts("--------------------------------------------------------------------------------------");
+				printf("~$ ");
 				cin >> op;
 				if(op == "Yes"){
 					puts("-----------------------------------------------------");
 					puts("Please input the number of his/her phone number");
 					puts("-----------------------------------------------------");
+					printf("~$ ");
 					int n; cin >> n;
 					puts("-----------------------------------------------------");
 					puts("Please input these these phone number");
@@ -185,12 +188,14 @@ int main(){
 					vector <long long> now; now.clear();
 					for(int i = 1; i <= n; i++) {
 						long long a;
+						printf("~$ ");
 						cin >> a;  now.push_back(a);
 						num2name.INSERT(a,name);
 					}
 					puts("-----------------------------------------------------");
 					puts("Please input his/her location");
 					puts("-----------------------------------------------------");
+					printf("~$ ");
 					string lo; cin >> lo;
 					name2info.INSERT(name,make_pair(now,lo));
 					puts("-----------------------------------------------------");
@@ -202,6 +207,7 @@ int main(){
 			puts("-----------------------------------------------------");
 			puts("Please input the number");
 			puts("-----------------------------------------------------");
+			printf("~$ ");
 			long long number; cin >> number;
 			string name;
 			bool isSuccess = num2name.QUERY(number, name);
@@ -222,6 +228,7 @@ int main(){
 			puts("-----------------------------------------------------");
 			puts("Please input the phone number and the new name");
 			puts("-----------------------------------------------------");
+			printf("~$ ");
 			cin >> number >> new_name;
 			bool isSuccess = num2name.QUERY(number, name);
 			if(isSuccess){
@@ -247,6 +254,7 @@ int main(){
 			puts("-----------------------------------------------------");
 			puts("Please input the phone number and the new location");
 			puts("-----------------------------------------------------");
+			printf("~$ ");
 			cin >> number >> new_location;
 			bool isSuccess = num2name.QUERY(number, name);
 			if(isSuccess){
@@ -267,6 +275,7 @@ int main(){
 			puts("-----------------------------------------------------");
 			puts("Please input the phone number");
 			puts("-----------------------------------------------------");
+			printf("~$ ");
 			cin >> number;
 			string name;
 			bool isSuccess = num2name.QUERY(number, name);
@@ -289,6 +298,16 @@ int main(){
 			puts("-----------------------------------------------------");
 			num2name.dfs(num2name.root);
 			puts("-----------------------------------------------------");
+		} else if( op == "Help"){
+			puts("--------------------------------------------------------------------------------------------------------");
+			printf( "Qname :     Query by name\n"
+				"Qnumber :   Query by number\n"
+				"Cname :     Change a persons name by number\n"
+				"Clocation : Change a persons location by number\n"
+				"Dperson :   Delete a person by number\n"
+				"Sort :      Sort the people by their number (one person may by printed many times if he/she has many numbers\n"
+				"Quit :      Exit the program\n");
+			puts("--------------------------------------------------------------------------------------------------------");
 		} else {
 			puts("-----------------------------------------------------");
 			puts("Please input the right command.");
