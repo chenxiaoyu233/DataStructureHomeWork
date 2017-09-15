@@ -1,0 +1,29 @@
+\contentsline {section}{\numberline {1}题目要求}{1}
+\contentsline {paragraph}{}{1}
+\contentsline {section}{\numberline {2}数据结构的选择}{2}
+\contentsline {paragraph}{}{2}
+\contentsline {subsection}{\numberline {2.1}基本操作}{2}
+\contentsline {paragraph}{}{2}
+\contentsline {subsubsection}{\numberline {2.1.1}splay}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {paragraph}{旋转}{3}
+\contentsline {paragraph}{}{5}
+\contentsline {paragraph}{代码}{5}
+\contentsline {subsubsection}{\numberline {2.1.2}access}{5}
+\contentsline {paragraph}{}{5}
+\contentsline {paragraph}{代码}{5}
+\contentsline {subsubsection}{\numberline {2.1.3}delete, insert, query, dfs}{6}
+\contentsline {subsection}{\numberline {2.2}复杂度分析}{6}
+\contentsline {subsubsection}{\numberline {2.2.1}势}{6}
+\contentsline {paragraph}{}{6}
+\contentsline {subsubsection}{\numberline {2.2.2}摊还时间}{6}
+\contentsline {paragraph}{}{6}
+\contentsline {paragraph}{}{6}
+\contentsline {paragraph}{}{7}
+\contentsline {subsubsection}{\numberline {2.2.3}结论}{7}
+\contentsline {section}{\numberline {3}题目要求的实现思路}{8}
+\contentsline {subsection}{\numberline {3.1}映射}{8}
+\contentsline {paragraph}{}{8}
+\contentsline {paragraph}{}{8}
+\contentsline {section}{\numberline {4}附录}{8}
+\contentsline {subsection}{\numberline {4.1}程序中使用的一些宏}{8}
