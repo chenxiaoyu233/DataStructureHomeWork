@@ -1,0 +1,147 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{ctex}
+\usepackage{enumerate}
+
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+\title{数据结构第二次作业}
+\author{陈小羽\ 2016060106020}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\section{题目要求}
+	\begin{itemize}
+		\item 从文件中读取迷宫数据，寻找并打印路径通路，储存迷宫数据到文件。
+		\item 寻找多入口多出口地图的所有通路。
+		\item 找到入口到出口最短的一条通路。
+		\item 自动生成迷宫地图。
+	\end{itemize}
+\section{寻找路径}
+	\subsection{算法选择}
+		\paragraph{}
+			按照题目的要求，我们需要找到\textbf{起点集合}到\textbf{终点集合}
+			之间的一条最短的通路。因为迷宫中相邻的两个格子之间的距离始终为1，
+			所以我们可以简单的使用\textbf{宽度优先搜索(BFS)}来完成任务。
+		\subsubsection{算法描述}
+			\paragraph{}
+				BFS算法有些类似现实中的声纳探测器。都从一点开始，向外辐射，寻找
+				目标。不同的是，声纳探测器需要接受返回的声波才能确定是否发现
+				目标，而BFS算法找到目标之后可以直接报告。
+			\paragraph{维护波}
+				为了实现BFS算法，我们需要模拟现实中的波。因为我们没有必要走回头路，
+				所以我们只需要维护整个波的\textbf{波前}, 也就是走在最前面的\textbf{波面}。
+			\paragraph{队列}
+				因为我们知道，队列具有\textbf{先进先出}的优良性质。所以我们可以使用队列
+				来维护\textbf{波前}。具体的操作如下:
+				\begin{enumerate}[1]
+					\item 将所有的起点入队。
+					\item 将对首的位置出队。然后访问其周围的位置。
+					\item 如果波访问到了一个位置, 且这个位置之前没有访问过，我们就将这个位置入队。
+				\end{enumerate}
+				通过这种方式，我们就用程序模拟了现实中的波。其中，队列中的元素就是波的波前。
+				我们可以发现，队列中的任意两个元素，到起点的距离之差不会超过1。
+			\paragraph{寻路算法}
+				我们将所有的起点入队，然后用BFS算法模拟若干个波前。这样，我们遇到的第一个终点，
+				就一定是所有的起点到终点中最近的那一个。这样，我们就完成了题目的要求。
+				我们在\textbf{算法1}中给出了伪代码。
+				\begin{algorithm}[!h]
+					\caption{BFS寻路算法}
+					\begin{algorithmic}[1]
+						\Function {BFS} {起点集合$S$, 终点集合$T$, 地图$Map$}
+							\For {地图中的每一个可能的位置$w_i$}
+								\Comment {初始化}
+								\State $Distance[w_i] \gets \infty$
+							\EndFor
+							\State $Queue = \emptyset$
+							\Comment {初始化}
+							\For {每一个在起点集合$S$中的元素$s_i$}
+								\Comment {起点入队}
+								\State {$Queue.tail \gets s_i$}
+								\State {$Distance[s_i] \gets 0$}
+							\EndFor
+							\While{$Queue$非空}
+								\State {$Front \gets Queue.pop$}
+								\Comment {对首元素出队}
+								\If {$Front \in T$} 
+									\Comment {找到答案，直接返回}
+									\State{\Return {$Distance[Front]$}}
+								\EndIf
+								\For {$Front$ 的每个邻近位置 $p$}
+									\If {$p$没有障碍物且之前没有访问过}
+										\Comment{扩展波前}
+										\State {$Queue.tail \gets p$}
+										\State {$Distance[p] \gets Distance[Front] + 1$}
+									\EndIf
+								\EndFor
+							\EndWhile
+							\State{\Return $\infty$}
+							\Comment{没有找到答案}
+						\EndFunction
+					\end{algorithmic}
+				\end{algorithm}
+		\subsubsection{算法分析}
+			\paragraph{}
+				因为每一个点最多访问一遍，所以算法的时间复杂度是$T \in \mathcal{O}(nm)$的，其中$n, m$分别表示
+				迷宫地图的长和宽。空间复杂度和时间复杂度一致。
+\section{生成地图}
+	\subsection{算法选择}
+		\paragraph{}
+			按照ppt中的提示，我们可以将迷宫中的所有可以到达的点做成一棵连通的树。
+			实现这个操作的一个很棒的算法就是\textbf{克鲁斯卡尔算法}
+		\subsubsection{算法描述}
+			\paragraph{}
+				主要的操作很简单，一开始，所有可以到达的点都是不连通的。然后我们考虑不断的
+				打通一些墙，使得最终，所有的这些点都是连通的，且形成一棵树。为此，我们需要
+				维护哪些点已经连通了，因为在这些点之间继续加边的话，会形成环。
+			\paragraph{维护连通集合}
+				我们使用一种被称为\textbf{并查集}的数据结构来维护连通集合。并查集通过树的父亲表示法，
+				表示了一个森林。其中，每个树的根节点的父亲就是这个点自己。这样，如果两个点
+				在这个森林的同一棵树中，我们就说，这两个点在同一个集合中。我们可以快速的判断每个点
+				所在树的根节点，并通过这个来判断两个点是否在同一棵树中。我们在\textbf{算法2}中给出了
+				这种算法的伪代码。
+				\begin{algorithm}
+					\caption{并查集}
+					\begin{algorithmic}[1]
+						\Function {Initial} {}
+							\Comment {初始化}
+							\For {每个点 $p_i$}
+								\State {$father[p_i] = p_i$}
+							\EndFor
+						\EndFunction
+						\Function {Find} {点$p$}
+							\Comment {找到点$p$所在树的根节点}
+							\If {$father[p] = p$}
+								\State{ \Return {$p$}}
+							\Else 
+								\State{ \Return {$father[p] \gets $ FIND($father[p]$)}}
+								\Comment {路径压缩}
+							\EndIf
+						\EndFunction
+						\Function {union} {点$p_x$,$p_y$}
+							\Comment {将$p_x$和$p_y$加入同一个集合}
+							\State {$f_x \gets $ FIND($p_x$)}
+							\State {$f_y \gets $ FIND($p_y$)}
+							\If {$f_x \not= f_y$}
+								\Comment {没有这个if有可能成环，产生死循环}
+								\State {$father[f_x] = f_y$}
+							\EndIf
+						\EndFunction
+					\end{algorithmic}
+				\end{algorithm}
+		\subsubsection{算法分析}
+			\paragraph{}
+				执行算法时，我们枚举了每条边，且并查集每次操作的复杂度可以看作常数，所以，
+				总的复杂度和边的数目同阶，故时间和空间复杂度都是$\mathcal{O}(nm)$的，其中，
+				$m,n$分别表示地图的长和宽。
+\section{结论}
+	\subsection{结果}
+		\paragraph{} 
+			程序运行正常。
+	\subsection{一些值得改进的地方}
+		\paragraph{$\cdots$}
+\end{document}
