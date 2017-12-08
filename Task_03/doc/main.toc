@@ -1,0 +1,35 @@
+\contentsline {section}{\numberline {1}题目要求}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {section}{\numberline {2}选择算法和实现}{3}
+\contentsline {subsection}{\numberline {2.1}最短路径算法}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {subsection}{\numberline {2.2}优先队列（小根堆）}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {paragraph}{}{3}
+\contentsline {paragraph}{插入q.push()}{3}
+\contentsline {paragraph}{弹出最小元素q.pop()}{4}
+\contentsline {paragraph}{}{4}
+\contentsline {subsection}{\numberline {2.3}生成路由表}{5}
+\contentsline {paragraph}{}{5}
+\contentsline {subsection}{\numberline {2.4}小结}{6}
+\contentsline {paragraph}{}{6}
+\contentsline {paragraph}{}{6}
+\contentsline {section}{\numberline {3}测试}{6}
+\contentsline {subsection}{\numberline {3.1}测试小根堆}{6}
+\contentsline {paragraph}{}{6}
+\contentsline {paragraph}{}{7}
+\contentsline {paragraph}{}{7}
+\contentsline {subsection}{\numberline {3.2}测试Dijkstra算法}{7}
+\contentsline {paragraph}{}{7}
+\contentsline {paragraph}{test1, n = 3}{8}
+\contentsline {paragraph}{test2, n = 5}{8}
+\contentsline {paragraph}{test3, n = 5}{9}
+\contentsline {paragraph}{test4, n = 5}{9}
+\contentsline {paragraph}{test5, n = 8}{10}
+\contentsline {subsection}{\numberline {3.3}小结}{11}
+\contentsline {paragraph}{}{11}
+\contentsline {section}{\numberline {4}感想与收获}{11}
+\contentsline {paragraph}{}{11}

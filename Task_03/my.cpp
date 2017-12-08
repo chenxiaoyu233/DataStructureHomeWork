@@ -5,6 +5,8 @@
 #include <ctime>
 using namespace std;
 
+#define FOR(i, l, r) for(int (i) = (l); (i) <= (r); (i)++)
+
 namespace PQ{
 	template <class Type, class Cmp>
 	struct PriorityQueue{
@@ -80,8 +82,12 @@ struct cmp{
 };
 
 void printRoute(int x){
-	if(x == 1) { printf("%d -> ", x); return; }
-	printRoute(pre[x]); printf("%d -> ", x);
+	if(x == 1) { printf("%2d -> ", x); return; }
+	printRoute(pre[x]); printf("%2d -> ", x);
+}
+int getCnt(int x){
+	if(x == 1) { return 1; }
+	else return getCnt(pre[x]) + 1;
 }
 
 void getAccessTalbe(int n){
@@ -100,15 +106,21 @@ void getAccessTalbe(int n){
 			}
 		}
 	}
-	for(int i = 2; i <= n; i++) {
-		printf("%d: ", i);
+	int cnt = 0;
+	FOR(i, 2, n) if(dis[i] != oo) cnt = max(cnt, getCnt(i)); 
+	FOR(i, 2, n){
+		printf("%2d: ", i);
 		if(dis[i] != oo){
 			printRoute(i); 
-			printf("\b\b\b| distance: %dms\n", dis[i]);
+			printf("\b\b\b");
+			int cur = getCnt(i);
+			FOR(j, 1, 6*(cnt-cur)) printf(" ");
+			printf(" | distance: %2d ms\n", dis[i]);
 		}else {
 			puts("oo");
 		}
 	}
+	//FOR(i, 2, n) if(dis[i] != oo) printf("%d\n", dis[i]);
 }
 
 int randint(int l, int r){
@@ -117,7 +129,7 @@ int randint(int l, int r){
 }
 
 void RDMshuffle(int *w, int n){ // random shuffle
-	for(int i = 1; i <= n; i++){
+	FOR(i, 1, n){
 		int j = randint(i, n);
 		swap(w[i], w[j]);
 	}
@@ -126,32 +138,57 @@ void RDMshuffle(int *w, int n){ // random shuffle
 void updateAccessInfo(int n){ // n个结点的网络(包括网关)
 	memset(head, 0, sizeof(head)); tot = 0;
 	int tmp[maxn], cnt;
-	for(int i = 1; i <= n; i++){
-		printf("info %d:\n", i);
+	int w[maxn][maxn];
+	FOR(i, 1, n) FOR(j, 1, n) w[i][j] = oo;
+	FOR(i, 1, n){
 		memset(tmp, 0, sizeof(tmp)); cnt = 0;
 		int neighborNum = randint(0, n-1); //一个点不能和自己相连
-		for(int j = 1; j <= n; j++) if(i != j) tmp[++cnt] = j;
+		FOR(j, 1, n) if(i != j) tmp[++cnt] = j;
 		RDMshuffle(tmp, cnt);
-		for(int j = 1; j <= neighborNum; j++){
+		FOR(j, 1, neighborNum){
 			int val = randint(0, 100);
 			insert(i, tmp[j], val); //加边
-			printf("%d -> %d %dms\n", i, tmp[j], val);
+			w[i][tmp[j]] = val;
 		}
-		puts("");
 	}
+	printf("from\\to| ");
+	FOR(i, 1, n) printf("%4d| ", i); puts("");
+	FOR(i, 1, n){
+		FOR(i, 1, 9+6*n) printf("-"); puts("");
+		printf("%7d| ", i);
+		FOR(j, 1, n){
+			if(w[i][j] == oo) printf("  oo| ");
+			else printf("%4d| ", w[i][j]);
+		} puts("");
+	}
+
+	/*
+	 * 生成graphviz所需的代码
+		printf("digraph G{\n");
+		FOR(i, 1, n){
+			FOR(j, 1, n) if(w[i][j] != oo){
+				printf("\"%d\" -> \"%d\" [ label = \"%d ms\"]\n", i, j, w[i][j]);
+			}
+		}
+		printf("}\n");
+	 */
 }
 
 void mainLoop(int n){
-	int t = 10;
-	while(t--){
-		//getchar(); // pause
+	while(1){
+		getchar(); // pause
+		system("clear");
+		puts("敲击回车以刷新");
+		puts("连接信息(ms)");
 		updateAccessInfo(n); puts("");
+		puts("路由表");
 		getAccessTalbe(n);
 	}
 }
 
 int main(){
-	//srand(time(NULL));
+	srand(time(NULL));
+	puts("请输入路由器的个数(包括网关)");
 	int n; scanf(" %d", &n);
 	mainLoop(n);
 	return 0;
